@@ -24,6 +24,13 @@ ORDER BY TaskName;
 
 $definedTasks = $database->getResultSet($query);
 
+$taskOptions = '';
+foreach ($definedTasks as $definedTask)
+{
+    $optionSelected = ($_GET["task_key"] ?? '') == $definedTask["TaskKey"] ? 'selected' : '';
+    $taskOptions .= '<option '.$optionSelected.' value="'.$definedTask["TaskKey"].'">'.$definedTask["TaskName"].'</option>';
+}
+
 $query = "
 SELECT 
     *
@@ -34,6 +41,13 @@ ORDER BY FirstName;
 
 $definedPersons = $database->getResultSet($query);
 
+$personOptions = '';
+foreach ($definedPersons as $definedPerson)
+{
+    $optionSelected = ($_SESSION["person_key"] ?? '') == $definedPerson["PersonKey"] ? 'selected' : '';
+    $personOptions .= '<option '.$optionSelected.' value="'.$definedPerson["PersonKey"].'">'.$definedPerson["FirstName"].'</option>';
+}
+
 ?>
 
             <form id="task-details-form">
@@ -42,14 +56,9 @@ $definedPersons = $database->getResultSet($query);
                 <div class="row">
 
                     <h3 class="col-md-12" style="font-size:20px">
-                        Task: <select id="select-task" name="task_key">
-<?php
-foreach ($definedTasks as $definedTask)
-{
-    $optionSelected = ($_GET["task_key"] ?? '') == $definedTask["TaskKey"] ? 'selected' : '';
-    echo '<option '.$optionSelected.' value="'.$definedTask["TaskKey"].'">'.$definedTask["TaskName"].'</option>';
-}
-?>
+                        Task: 
+                        <select id="select-task" name="task_key">
+                            <?= $taskOptions ?>
                         </select>
                     </h3>
 
@@ -57,17 +66,9 @@ foreach ($definedTasks as $definedTask)
                 <div class="row">
 
                     <div class="col-md-12">
-                        Completed By: <select id="select-person" name="person_key">
-
-<?php
-foreach ($definedPersons as $definedPerson)
-{
-    $optionSelected = ($_SESSION["person_key"] ?? '') == $definedPerson["PersonKey"] ? 'selected' : '';
-    echo '<option '.$optionSelected.' value="'.$definedPerson["PersonKey"].'">'.$definedPerson["FirstName"].'</option>';
-}
-
-?>
-
+                        Completed By: 
+                        <select id="select-person" name="person_key">
+                            <?= $personOptions ?>
                         </select>
                     </div>
 
