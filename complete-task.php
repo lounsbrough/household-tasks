@@ -48,6 +48,11 @@ foreach ($definedPersons as $definedPerson)
     $personOptions .= '<option '.$optionSelected.' value="'.$definedPerson["PersonKey"].'">'.$definedPerson["FirstName"].'</option>';
 }
 
+$snoozeAmountOptions = '';
+for ($i = 1; $i <= 60; $i++) {
+    $snoozeAmountOptions .= '<option>'.$i.'</option>';
+}
+
 ?>
 
             <form id="task-details-form">
@@ -89,11 +94,7 @@ foreach ($definedPersons as $definedPerson)
                         <i id="fa-task-snooze-for" class="fa-task-option fa fa-yellow fa-3x fa-clock-o cursor-pointer fa-vcenter fa-unselected"></i>
                         <span style="font-size:20px">
                             <select disabled name="snooze_amount" style="opacity:0.3">
-<?php
-for ($i = 1; $i <= 60; $i++) {
-    echo '<option>'.$i.'</option>';
-}
-?>
+                                <?= $snoozeAmountOptions ?>
                             </select>
                             <select disabled name="snooze_type" style="opacity:0.3">
                                 <option>minutes</option>
