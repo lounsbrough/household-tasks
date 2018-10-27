@@ -1,0 +1,36 @@
+.main-page-header {
+	margin: 0px auto;
+}
+.page-header>h1,h2,h3 {
+	margin-top: 0px;
+}
+@media (max-width:767px) {
+	.date-header-btn .btn {
+		font-size:10px;
+	}
+}
+.cursor-pointer {
+	cursor: pointer;
+}
+.fa-green {
+	color: #5cb85c;
+}
+.fa-red {
+	color: #f44336;
+}
+.fa-yellow {
+	color: #f0ad4e;
+}
+.fa-task-option {
+	margin-right: 20px;
+}
+.fa-unselected {
+	color: #ababab;
+	font-weight: 100;
+}
+.fa-selected {
+	
+}
+.fa-vcenter {
+	vertical-align: middle;
+}
