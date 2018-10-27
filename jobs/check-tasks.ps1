@@ -1,3 +1,3 @@
-﻿cd "E:\php\household-tasks"
+﻿cd "E:\php\household-tasks\jobs"
 
-php.exe "E:\php\household-tasks\check_tasks.php"
+php.exe "E:\php\household-tasks\jobs\check-tasks.php"
