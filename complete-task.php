@@ -1,16 +1,38 @@
 <?php
 
 define("DIR_PATH","");
-define("TOP_LEVEL_PATH",DIR_PATH."../");
 
 $pageTitle = "Complete Task";
 
 $headerContent = '';
-require DIR_PATH."includes/header.php";
+require DIR_PATH.'includes/header.php';
 
 if (isset($_GET["person_key"])) {
     $_SESSION["person_key"] = $_GET["person_key"];
 }
+
+require_once DIR_PATH.'classes/database.php';
+$database = new Database();
+
+$query = "
+SELECT 
+    *
+FROM
+    definedtasks
+ORDER BY TaskName;
+";
+
+$definedTasks = $database->getResultSet($query);
+
+$query = "
+SELECT 
+    *
+FROM
+    persons
+ORDER BY FirstName;
+";
+
+$definedPersons = $database->getResultSet($query);
 
 ?>
 
@@ -21,23 +43,13 @@ if (isset($_GET["person_key"])) {
 
                     <h3 class="col-md-12" style="font-size:20px">
                         Task: <select id="select-task" name="task_key">
-
 <?php
-
-$householdConnection = new PDO("mysql:host=localhost;port=3306;dbname=householdtasks", getenv('MYSQL_DB_USERNAME'), getenv('MYSQL_DB_PASSWORD'));
-
-$query = "Select *
-          From   definedtasks
-          Order By TaskName";
-
-if ($sql = $householdConnection->query($query)) {
-    while ($result = $sql->fetch()) {
-        echo '<option '.(isset($_GET["task_key"]) && $_GET["task_key"] == $result["TaskKey"] ? 'selected' : '').' value="'.$result["TaskKey"].'">'.$result["TaskName"].'</option>';
-    }
+foreach ($definedTasks as $definedTask)
+{
+    $optionSelected = ($_GET["task_key"] ?? '') == $definedTask["TaskKey"] ? 'selected' : '';
+    echo '<option '.$optionSelected.' value="'.$definedTask["TaskKey"].'">'.$definedTask["TaskName"].'</option>';
 }
-
 ?>
-
                         </select>
                     </h3>
 
@@ -48,27 +60,10 @@ if ($sql = $householdConnection->query($query)) {
                         Completed By: <select id="select-person" name="person_key">
 
 <?php
-
-$householdConnection = new PDO("mysql:host=localhost;port=3306;dbname=householdtasks", getenv('MYSQL_DB_USERNAME'), getenv('MYSQL_DB_PASSWORD'));
-
-$query = "Select *
-          From   persons
-          Order By FirstName";
-
-if ($sql = $householdConnection->query($query)) {
-    while ($result = $sql->fetch()) {
-        $optionSelected = '';
-        if (isset($_GET["person_key"])) {
-            if ($_GET["person_key"] == $result["PersonKey"]) {
-                $optionSelected = 'selected';
-            }
-        } else if (isset($_SESSION["person_key"])) {
-            if ($_SESSION["person_key"] == $result["PersonKey"]) {
-                $optionSelected = 'selected';
-            }
-        }
-        echo '<option '.$optionSelected.' value="'.$result["PersonKey"].'">'.$result["FirstName"].'</option>';
-    }
+foreach ($definedPersons as $definedPerson)
+{
+    $optionSelected = ($_SESSION["person_key"] ?? '') == $definedPerson["PersonKey"] ? 'selected' : '';
+    echo '<option '.$optionSelected.' value="'.$definedPerson["PersonKey"].'">'.$definedPerson["FirstName"].'</option>';
 }
 
 ?>
@@ -94,7 +89,7 @@ if ($sql = $householdConnection->query($query)) {
                         <span style="font-size:20px">
                             <select disabled name="snooze_amount" style="opacity:0.3">
 <?php
-for ($i=1;$i<=60;$i++) {
+for ($i = 1; $i <= 60; $i++) {
     echo '<option>'.$i.'</option>';
 }
 ?>
@@ -136,31 +131,44 @@ $footerContent = '
 
 if (isset($_GET["task_key"])) {
 
-    $query = "Select CompletedTMS, FirstName
-              From   definedtasks, completedtasks, persons
-              Where  definedtasks.TaskKey = completedtasks.TaskKey
-              And    completedtasks.PersonKey = persons.PersonKey
-              And    completedtasks.TaskKey = ".$_GET["task_key"]."
-              And    CompletedTMS > Date_Add(Current_Timestamp,INTERVAL - 24 hour)
-              And    NextOccurrenceTMS > Current_Timestamp
-              Order By CompletedTMS Desc
-              Limit 1";
+    $query = "
+    SELECT 
+        CompletedTMS, FirstName
+    FROM
+        definedtasks,
+        completedtasks,
+        persons
+    WHERE
+        definedtasks.TaskKey = completedtasks.TaskKey
+            AND completedtasks.PersonKey = persons.PersonKey
+            AND completedtasks.TaskKey = :taskkey
+            AND CompletedTMS > DATE_ADD(CURRENT_TIMESTAMP,
+            INTERVAL - 24 HOUR)
+            AND NextOccurrenceTMS > CURRENT_TIMESTAMP
+    ORDER BY CompletedTMS DESC
+    LIMIT 1
+    ";
 
-    if ($sql = $householdConnection->query($query)) {
-        if ($result = $sql->fetch()) {
-            $footerContent .= '<script>
-                                   $(function() {
-                                       swal({
-                                           title: "Task Already Complete",
-                                           text: "This task was completed by '.trim($result["FirstName"]).'",
-                                           type: "success"
-                                       });
-                                       $(".sweet-alert .sa-icon.sa-success").css({"border-color":"#5cb85c"});
-                                       $(".sweet-alert .sa-icon.sa-success .sa-line").css({"background-color":"#5cb85c"});
-                                       $(".sweet-alert .sa-icon.sa-success .sa-placeholder").css({"border":"4px solid rgba(92,184,92,0.5)"});
-                                   });
-                               </script>';
-        }
+    $parameters = array(
+        array('name' => ':taskkey', 'value' => $_GET["task_key"])
+    );
+
+    $results = $database->getResultSet($query, $parameters);
+
+    if (!empty($results))
+    {
+        $footerContent .= '<script>
+                                $(function() {
+                                    swal({
+                                        title: "Task Already Complete",
+                                        text: "This task was completed by '.trim($results[0]["FirstName"]).'",
+                                        type: "success"
+                                    });
+                                    $(".sweet-alert .sa-icon.sa-success").css({"border-color":"#5cb85c"});
+                                    $(".sweet-alert .sa-icon.sa-success .sa-line").css({"background-color":"#5cb85c"});
+                                    $(".sweet-alert .sa-icon.sa-success .sa-placeholder").css({"border":"4px solid rgba(92,184,92,0.5)"});
+                                });
+                            </script>';
     }
 
 }

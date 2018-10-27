@@ -1,12 +1,11 @@
 <?php
 
 define("DIR_PATH","");
-define("TOP_LEVEL_PATH",DIR_PATH."../");
 
 $pageTitle = "Task Calendar";
 
 $headerContent = '<link href="'.DIR_PATH.'assets/bootstrap-calendar-master/css/calendar.min.css" rel="stylesheet">';
-require DIR_PATH."includes/header.php";
+require DIR_PATH.'includes/header.php';
 
 ?>
 
