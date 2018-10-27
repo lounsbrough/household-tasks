@@ -5,6 +5,9 @@ define("DIR_PATH","../");
 require_once DIR_PATH.'classes/database.php';
 $database = new Database();
 
+require_once DIR_PATH.'classes/pushbullet.php';
+$pushbullet = new Pushbullet();
+
 $query = "
 SELECT 
     *
@@ -53,11 +56,8 @@ foreach ($tasksDue as $taskDue)
 
 	foreach ($pushbulletDevices as $pushbulletDevice)
 	{
-		try {
-			$pushbullet->device($pushbulletDevice["DeviceName"])->pushLink($taskDue["TaskName"],"https://".getenv('PUBLIC_SERVER_DNS')."/household-tasks/complete-task.php?task_key=".$taskDue["TaskKey"]."&person_key=".$pushbulletDevice["PersonKey"],"View Task");
-		} catch (Exception $e) {
-			error_log("Error sending pushbullet to device: ".$pushbulletDevice["DeviceName"].". ".$e->getMessage());
-		}
+		$linkUrl = "https://".getenv('PUBLIC_SERVER_DNS')."/household-tasks/complete-task.php?task_key=".$taskDue["TaskKey"]."&person_key=".$pushbulletDevice["PersonKey"];
+		$pushbullet->pushLink($pushbulletDevice["DeviceName"], $taskDue["TaskName"], $linkUrl, 'View Task');
 	}
 	
 	$query = "
