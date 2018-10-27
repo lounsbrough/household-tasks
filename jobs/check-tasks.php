@@ -15,8 +15,8 @@ FROM
     definedtasks
 WHERE
     NOW() >= NextOccurrenceTMS
-        AND LastNotificationTMS <= DATE_ADD(NOW(),
-        INTERVAL - 1 DAY);
+        AND (LastNotificationTMS IS NULL
+        OR LastNotificationTMS <= DATE_ADD(NOW(), INTERVAL - 1 DAY));
 ";
 
 $tasksDue = $database->getResultSet($query);
@@ -35,7 +35,7 @@ foreach ($tasksDue as $taskDue)
 	";
 
 	$parameters = array(
-		array('name' => ':taskkey', 'value' => $resultTasks["TaskKey"])
+		array('name' => ':taskkey', 'value' => $taskDue["TaskKey"])
 	);
 
 	$pushbulletDevices = $database->getResultSet($query, $parameters);

@@ -32,7 +32,7 @@ $query = "
 UPDATE definedtasks 
 SET 
 	NextOccurrenceTMS = :nextoccurrencetms,
-	LastNotificationTMS = '2000-01-01 00:00:00',
+	LastNotificationTMS = NULL,
 	Snoozed = TRUE
 WHERE
 	TaskKey = :taskkey
