@@ -2,43 +2,76 @@
 
 define("DIR_PATH","../");
 
-echo "hey!";
-die;
+require_once DIR_PATH.'classes/database.php';
+$database = new Database();
 
-include DIR_PATH."includes/Pushbullet/pushbullet.php";
+$query = "
+SELECT 
+    *
+FROM
+    definedtasks
+WHERE
+    NOW() >= NextOccurrenceTMS
+        AND LastNotificationTMS <= DATE_ADD(NOW(),
+        INTERVAL - 1 DAY);
+";
 
-$householdConnection = new PDO("mysql:host=localhost;port=3306;dbname=householdtasks", getenv('MYSQL_DB_USERNAME'), getenv('MYSQL_DB_PASSWORD'));
+$tasksDue = $database->getResultSet($query);
 
-$query = "Select *
-          From   definedtasks
-          Where  Current_Timestamp >= NextOccurrenceTMS
-          And    LastNotificationTMS <= Date_Add(Current_Timestamp,INTERVAL -1 DAY)";
+foreach ($tasksDue as $taskDue)
+{
+	$query = "
+	SELECT 
+		*
+	FROM
+		householdtasks.assignedtasks
+			JOIN
+		pushbulletdevices ON pushbulletdevices.PersonKey = assignedtasks.PersonKey
+	WHERE
+		assignedtasks.TaskKey = :taskkey
+	";
 
-if ($sqlTasks = $householdConnection->query($query)) {
-    while ($resultTasks = $sqlTasks->fetch()) {
+	$parameters = array(
+		array('name' => ':taskkey', 'value' => $resultTasks["TaskKey"])
+	);
 
-    	$query = "Select *
-    			  From   PushbulletDevices";
-    	if (trim($resultTasks["PersonList"]) != "") {
-    		$query .= " Where PersonKey In (".trim($resultTasks["PersonList"]).")";
-    	}
+	$pushbulletDevices = $database->getResultSet($query, $parameters);
 
-    	if ($sqlDevices = $householdConnection->query($query)) {
-    		while ($resultDevices = $sqlDevices->fetch()) {
-    			try {
-					$pushbullet->device($resultDevices["DeviceName"])->pushLink($resultTasks["TaskName"],"https://".getenv('PUBLIC_SERVER_DNS')."/household-tasks/complete-task.php?task_key=".$resultTasks["TaskKey"]."&person_key=".$resultDevices["PersonKey"],"View Task");
-				} catch (Exception $e) {
-					error_log("Error sending pushbullet to device: ".$resultDevices["DeviceName"].". ".$e->getMessage());
-				}
-    		}
-    	}
-    	
-		$query = "Update definedtasks
-		          Set    LastNotificationTMS = Current_Timestamp
-		          Where  TaskKey = ".$resultTasks["TaskKey"];
-		$householdConnection->query($query);
+	if (empty($pushbulletDevices))
+	{
+		$query = "
+		SELECT 
+			*
+		FROM
+			pushbulletdevices
+		WHERE
+			ReceiveDefaultNotifications = TRUE
+		";
 
-    }
+		$pushbulletDevices = $database->getResultSet($query);
+	}
+
+	foreach ($pushbulletDevices as $pushbulletDevice)
+	{
+		try {
+			$pushbullet->device($pushbulletDevice["DeviceName"])->pushLink($taskDue["TaskName"],"https://".getenv('PUBLIC_SERVER_DNS')."/household-tasks/complete-task.php?task_key=".$taskDue["TaskKey"]."&person_key=".$pushbulletDevice["PersonKey"],"View Task");
+		} catch (Exception $e) {
+			error_log("Error sending pushbullet to device: ".$pushbulletDevice["DeviceName"].". ".$e->getMessage());
+		}
+	}
+	
+	$query = "
+	UPDATE definedtasks 
+	SET 
+		LastNotificationTMS = NOW()
+	WHERE
+		TaskKey = :taskkey
+	";
+
+	$parameters = array(
+		array('name' => ':taskkey', 'value' => $taskDue["TaskKey"])
+	);
+
+	$database->executeStatement($query, $parameters);
 }
-
 ?>

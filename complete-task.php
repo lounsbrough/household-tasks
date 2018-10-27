@@ -145,9 +145,9 @@ if (isset($_GET["task_key"])) {
         definedtasks.TaskKey = completedtasks.TaskKey
             AND completedtasks.PersonKey = persons.PersonKey
             AND completedtasks.TaskKey = :taskkey
-            AND CompletedTMS > DATE_ADD(CURRENT_TIMESTAMP,
+            AND CompletedTMS > DATE_ADD(NOW(),
             INTERVAL - 24 HOUR)
-            AND NextOccurrenceTMS > CURRENT_TIMESTAMP
+            AND NextOccurrenceTMS > NOW()
     ORDER BY CompletedTMS DESC
     LIMIT 1
     ";
