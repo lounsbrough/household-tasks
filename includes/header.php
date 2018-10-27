@@ -61,7 +61,7 @@ session_regenerate_id();
                 </div>
                 <div id="navbar" class="collapse navbar-collapse">
                     <ul class="nav navbar-nav">
-                        <li class="active"><a href="task_calendar.php">Task Calendar</a></li>
+                        <li class="active"><a href="task-calendar.php">Task Calendar</a></li>
                         <li class="active"><a href="complete-task.php">Complete Task</a></li>
                     </ul>
                 </div>

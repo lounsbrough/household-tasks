@@ -34,7 +34,7 @@ $(function() {
 				if (isConfirm) {
 					$.get("ajax/complete-task.php?"+$("#task-details-form").serialize())
 					.done(function() {
-						window.location.replace("task_calendar.php");
+						window.location.replace("task-calendar.php");
 					})
 					.fail(function() {
 						swal({
@@ -69,7 +69,7 @@ $(function() {
 				if (isConfirm) {
 					$.get("ajax/snooze-task.php?"+$("#task-details-form").serialize())
 					.done(function() {
-						window.location.replace("task_calendar.php");
+						window.location.replace("task-calendar.php");
 					})
 					.fail(function() {
 						swal({

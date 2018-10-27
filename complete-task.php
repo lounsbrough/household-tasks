@@ -131,8 +131,9 @@ $footerContent = '
 
 ';
 
-if (isset($_GET["task_key"])) {
+require DIR_PATH."includes/footer.php";
 
+if (isset($_GET["task_key"])) {
     $query = "
     SELECT 
         CompletedTMS, FirstName
@@ -159,22 +160,20 @@ if (isset($_GET["task_key"])) {
 
     if (!empty($results))
     {
-        $footerContent .= '<script>
-                                $(function() {
-                                    swal({
-                                        title: "Task Already Complete",
-                                        text: "This task was completed by '.trim($results[0]["FirstName"]).'",
-                                        type: "success"
-                                    });
-                                    $(".sweet-alert .sa-icon.sa-success").css({"border-color":"#5cb85c"});
-                                    $(".sweet-alert .sa-icon.sa-success .sa-line").css({"background-color":"#5cb85c"});
-                                    $(".sweet-alert .sa-icon.sa-success .sa-placeholder").css({"border":"4px solid rgba(92,184,92,0.5)"});
-                                });
-                            </script>';
+?>
+    <script>
+        $(function() {
+            swal({
+                title: "Task Already Complete",
+                text: "This task was completed by <?= trim($results[0]["FirstName"]) ?>",
+                type: "success"
+            });
+            $(".sweet-alert .sa-icon.sa-success").css({"border-color":"#5cb85c"});
+            $(".sweet-alert .sa-icon.sa-success .sa-line").css({"background-color":"#5cb85c"});
+            $(".sweet-alert .sa-icon.sa-success .sa-placeholder").css({"border":"4px solid rgba(92,184,92,0.5)"});
+        });
+    </script>
+<?php
     }
-
 }
-
-require DIR_PATH."includes/footer.php";
-
 ?>
