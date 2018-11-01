@@ -13,7 +13,7 @@ Class Database
 
         $this->connection = new PDO("mysql:host=$dbHost;port=$dbPort;dbname=$dbName", $dbUsername, $dbPassword, 
         array(
-            PDO::MYSQL_ATTR_SSL_CA => DIR_PATH.'cacert.pem',
+            PDO::MYSQL_ATTR_SSL_CA => dirname(__FILE__).'/../../cacert.pem',
             PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => false
         ));
 

@@ -1,17 +1,17 @@
 <?php
 
-define("DIR_PATH","");
-
 $pageTitle = "Complete Task";
 
+define('DIR_PATH', '');
+
 $headerContent = '';
-require DIR_PATH.'includes/header.php';
+require dirname(__FILE__).'/includes/header.php';
 
 if (isset($_GET["person_key"])) {
     $_SESSION["person_key"] = $_GET["person_key"];
 }
 
-require_once DIR_PATH.'classes/database.php';
+require_once dirname(__FILE__).'/classes/database.php';
 $database = new Database();
 
 $query = "
@@ -127,11 +127,11 @@ for ($i = 1; $i <= 60; $i++) {
 
 $footerContent = '
 
-<script src="js/complete-task.js"></script>
+<script src="'.DIR_PATH.'js/complete-task.js"></script>
 
 ';
 
-require DIR_PATH."includes/footer.php";
+require dirname(__FILE__)."/includes/footer.php";
 
 if (isset($_GET["task_key"])) {
     $query = "

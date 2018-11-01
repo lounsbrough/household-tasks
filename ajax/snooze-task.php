@@ -1,7 +1,5 @@
 <?PHP
 
-define("DIR_PATH","../");
-
 header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
 header("Cache-Control: no-store, no-cache, must-revalidate");
 header("Cache-Control: post-check=0, pre-check=0", false);
@@ -25,7 +23,7 @@ else
 	die;
 }
 
-require_once DIR_PATH.'classes/database.php';
+require_once dirname(__FILE__).'/../classes/database.php';
 $database = new Database();
 
 $query = "

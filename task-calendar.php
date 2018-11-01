@@ -1,11 +1,11 @@
 <?php
 
-define("DIR_PATH","");
-
 $pageTitle = "Task Calendar";
 
+define('DIR_PATH', '');
+
 $headerContent = '<link href="'.DIR_PATH.'assets/bootstrap-calendar-master/css/calendar.min.css" rel="stylesheet">';
-require DIR_PATH.'includes/header.php';
+require dirname(__FILE__).'/includes/header.php';
 
 ?>
 
@@ -46,9 +46,9 @@ $footerContent = '
         <script>
             var tmpl_path = "'.DIR_PATH.'assets/bootstrap-calendar-master/tmpls/";
         </script>
-        <script src="js/task-calendar.js"></script>
+        <script src="'.DIR_PATH.'js/task-calendar.js"></script>
 ';
 
-require DIR_PATH."includes/footer.php";
+require dirname(__FILE__)."/includes/footer.php";
 
 ?>

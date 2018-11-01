@@ -1,8 +1,6 @@
 <?PHP
 
-error_reporting(E_ALL);
-
-define("DIR_PATH","../");
+define('DIR_PATH', '');
 
 header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
 header("Cache-Control: no-store, no-cache, must-revalidate");
@@ -14,13 +12,14 @@ if (!isset($_GET["task_key"]) || !isset($_GET["person_key"]) || !isset($_GET["co
     die;
 }
 
-include DIR_PATH."includes/functions.php";
-
 $taskKey = $_GET["task_key"];
 $personKey = $_GET["person_key"];
 $completedTMS = date("Y-m-d H:i:s",strtotime($_GET["completed_tms"]));
 
-require_once DIR_PATH.'classes/database.php';
+require_once dirname(__FILE__).'/../classes/date-functions.php';
+$dateFunctions = new DateFunctions();
+
+require_once dirname(__FILE__).'/../classes/database.php';
 $database = new Database();
 
 $query = "
@@ -83,7 +82,7 @@ else
 	$database->executeStatement($query, $parameters);
 }
 
-if ($nextOccurrenceTMS = calculateNextOccurrenceTMS($taskKey, strtotime($completedTMS))) {
+if ($nextOccurrenceTMS = $dateFunctions->calculateNextOccurrenceTMS($taskKey, strtotime($completedTMS))) {
 
 	$query = "
 	UPDATE definedtasks 

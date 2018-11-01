@@ -1,11 +1,9 @@
 <?php
 
-define("DIR_PATH","../");
-
-require_once DIR_PATH.'classes/database.php';
+require_once dirname(__FILE__).'/../classes/database.php';
 $database = new Database();
 
-require_once DIR_PATH.'classes/pushbullet.php';
+require_once dirname(__FILE__).'/../classes/pushbullet.php';
 $pushbullet = new Pushbullet();
 
 $query = "

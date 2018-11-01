@@ -26,23 +26,23 @@ session_regenerate_id();
         <link rel="icon" type="image/png" href="favicon/favicon-192x192.png" sizes="192x192">
         <link rel="shortcut icon" href="favicon/favicon.ico">
 
-        <title><?php echo $pageTitle; ?></title>
+        <title><?= $pageTitle; ?></title>
 
         <!-- Bootstrap core CSS -->
-        <link href="<?php echo DIR_PATH; ?>assets/bootstrap-3.3.6-dist/css/bootstrap.min.css" rel="stylesheet">
+        <link href="<?= DIR_PATH; ?>assets/bootstrap-3.3.6-dist/css/bootstrap.min.css" rel="stylesheet">
 
         <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-        <link href="<?php echo DIR_PATH; ?>assets/bootstrap-3.3.6-dist/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+        <link href="<?= DIR_PATH; ?>assets/bootstrap-3.3.6-dist/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
 
         <!-- Font Awesome -->
-        <link href="<?php echo DIR_PATH; ?>assets/font-awesome/css/font-awesome.min.css" media="screen, projection" rel="stylesheet">
+        <link href="<?= DIR_PATH; ?>assets/font-awesome/css/font-awesome.min.css" media="screen, projection" rel="stylesheet">
 
         <!-- Sweet Alert -->
-        <link href="<?php echo DIR_PATH; ?>assets/sweetalert-master/dist/sweetalert.css" media="screen, projection" rel="stylesheet">
+        <link href="<?= DIR_PATH; ?>assets/sweetalert-master/dist/sweetalert.css" media="screen, projection" rel="stylesheet">
 
         <link href="assets/household-tasks.css" media="screen, projection" rel="stylesheet">
 
-        <?php echo $headerContent; ?>
+        <?= $headerContent; ?>
 
     </head>
 
@@ -72,5 +72,5 @@ session_regenerate_id();
         <div class="container">
 
             <div class="page-header main-page-header">
-                <h2><?php echo $pageTitle; ?></h2>
+                <h2><?= $pageTitle; ?></h2>
             </div>
