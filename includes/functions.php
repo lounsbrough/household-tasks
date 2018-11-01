@@ -35,26 +35,24 @@ function calculateNextOccurrenceTMS($taskKey, $completedTMS) {
 
     $nextOccurrenceTMS = date("Y-m-d H:i:s",strtotime(date("Y-m-d",$completedTMS)." + ".$taskDefinition["RecurrenceAmount"]." ".$taskDefinition["RecurrenceType"]));
 
-    // Check for specific day of week
-    if ($taskDefinition["WeekDay"] != "") {
-
+    if (!empty($taskDefinition["WeekDay"]))
+    {
         $nextOccurrenceTMS = date("Y-m-d H:i:s",strtotime($nextOccurrenceTMS." - 3 day"));
 
         $nextOccurrenceTMS = findNextWeekDate($nextOccurrenceTMS);
 
     }
-
-    // Check for specific day of month
-    if ($taskDefinition["MonthDay"] != 0) {
+    else if (!empty($taskDefinition["MonthDay"] != 0))
+    {
 
         $nextOccurrenceTMS = date("Y-m-d H:i:s",strtotime($nextOccurrenceTMS." - 10 day"));
 
         $nextOccurrenceTMS = findNextMonthDate($nextOccurrenceTMS);
 
     }
-
-    // Check for specific time of day
-    if ($taskDefinition["SpecificTime"]) {
+    
+    if ($taskDefinition["SpecificTime"]) 
+    {
         $nextOccurrenceTMS = date("Y-m-d H:i:s",strtotime(date("Y-m-d",strtotime($nextOccurrenceTMS))." ".$taskDefinition["TimeOfDay"]));
     }
 
