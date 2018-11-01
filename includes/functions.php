@@ -42,7 +42,7 @@ function calculateNextOccurrenceTMS($taskKey, $completedTMS) {
         $nextOccurrenceTMS = findNextWeekDate($nextOccurrenceTMS);
 
     }
-    else if (!empty($taskDefinition["MonthDay"] != 0))
+    else if (!empty($taskDefinition["MonthDay"]))
     {
 
         $nextOccurrenceTMS = date("Y-m-d H:i:s",strtotime($nextOccurrenceTMS." - 10 day"));
