@@ -30,7 +30,7 @@ Class DateFunctions
             return false;
         }
 
-        $nextTMS = date("Y-m-d H:i:s", strtotime(date("Y-m-d",$completedTMS)." + ".$taskDefinition["RecurrenceAmount"]." ".$taskDefinition["RecurrenceType"]));
+        $nextTMS = date("Y-m-d H:i:s", strtotime(date("Y-m-d", $completedTMS)." + ".$taskDefinition["RecurrenceAmount"]." ".$taskDefinition["RecurrenceType"]));
 
         if (!empty($taskDefinition["WeekDay"]))
         {
@@ -52,7 +52,7 @@ Class DateFunctions
     private function findNextWeekDate($startTMS, $weekDay) 
     {
         $nextDate = $startTMS;
-        $nextDate->modify("next $weekDay");
+        $nextDate->modify($weekDay);
         return $nextDate->format("Y-m-d H:i:s");
     }
 
