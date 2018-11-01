@@ -34,7 +34,7 @@ Class DateFunctions
 
         if (!empty($taskDefinition["WeekDay"]))
         {
-            $nextOccurrenceTMS = $this->findNextWeekDate(new DateTime($nextOccurrenceTMS." - 10 day"), $taskDefinition["WeekDay"]);
+            $nextOccurrenceTMS = $this->findNextWeekDate(new DateTime($nextOccurrenceTMS." - 3 day"), $taskDefinition["WeekDay"]);
         }
         else if (!empty($taskDefinition["MonthDay"]))
         {
