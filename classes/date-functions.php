@@ -30,23 +30,23 @@ Class DateFunctions
             return false;
         }
 
-        $nextOccurrenceTMS = date("Y-m-d H:i:s", strtotime(date("Y-m-d",$completedTMS)." + ".$taskDefinition["RecurrenceAmount"]." ".$taskDefinition["RecurrenceType"]));
+        $nextTMS = date("Y-m-d H:i:s", strtotime(date("Y-m-d",$completedTMS)." + ".$taskDefinition["RecurrenceAmount"]." ".$taskDefinition["RecurrenceType"]));
 
         if (!empty($taskDefinition["WeekDay"]))
         {
-            $nextOccurrenceTMS = $this->findNextWeekDate(new DateTime($nextOccurrenceTMS." - 3 day"), $taskDefinition["WeekDay"]);
+            $nextTMS = $this->findNextWeekDate(new DateTime($nextTMS." - 3 day"), $taskDefinition["WeekDay"]);
         }
         else if (!empty($taskDefinition["MonthDay"]))
         {
-            $nextOccurrenceTMS = $this->findNextMonthDate(new DateTime($nextOccurrenceTMS." - 10 day"), $taskDefinition["MonthDay"]);
+            $nextTMS = $this->findNextMonthDate(new DateTime($nextTMS." - 10 day"), $taskDefinition["MonthDay"]);
         }
         
         if ($taskDefinition["SpecificTime"]) 
         {
-            $nextOccurrenceTMS = date("Y-m-d H:i:s", strtotime(date("Y-m-d",strtotime($nextOccurrenceTMS))." ".$taskDefinition["TimeOfDay"]));
+            $nextTMS = date("Y-m-d H:i:s", strtotime(date("Y-m-d",strtotime($nextTMS))." ".$taskDefinition["TimeOfDay"]));
         }
 
-        return strtotime($nextOccurrenceTMS);
+        return strtotime($nextTMS);
     }
 
     private function findNextWeekDate($startTMS, $weekDay) 
