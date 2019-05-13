@@ -1,36 +1,9 @@
 <?php
 Class DateFunctions
 {
-    public function calculateNextOccurrenceTMS($taskKey, $completedTMS) 
+    public function calculateNextOccurrenceTMS($taskDefinition, $startTMS) 
     {
-        require_once dirname(__FILE__).'/database.php';
-        $database = new Database();
-
-        $query = "
-        SELECT
-            *
-        FROM
-            definedtasks
-        WHERE
-            TaskKey = :taskkey
-        ";
-
-        $parameters = array(
-            array('name' => ':taskkey', 'value' => $taskKey)
-        );
-        
-        $results = $database->getResultSet($query, $parameters);
-
-        if (!empty($results))
-        {
-            $taskDefinition = $results[0];
-        }
-
-        if (empty($taskDefinition)) {
-            return false;
-        }
-
-        $nextTMS = date("Y-m-d H:i:s", strtotime(date("Y-m-d", $completedTMS)." + ".$taskDefinition["RecurrenceAmount"]." ".$taskDefinition["RecurrenceType"]));
+        $nextTMS = date("Y-m-d H:i:s", strtotime(date("Y-m-d", $startTMS)." + ".$taskDefinition["RecurrenceAmount"]." ".$taskDefinition["RecurrenceType"]));
 
         if (!empty($taskDefinition["WeekDay"]))
         {

@@ -29,7 +29,7 @@ foreach ($results as $result)
 {
     $taskKey = $result["TaskKey"];
 
-    $followingOccurrence = $dateFunctions->calculateNextOccurrenceTMS($taskKey, strtotime($result["NextOccurrenceTMS"]));
+    $followingOccurrence = $dateFunctions->calculateNextOccurrenceTMS($result, strtotime($result["NextOccurrenceTMS"]));
 
     $event_class = "event-info";
     if (strtotime(date("Y-m-d", strtotime($result["NextOccurrenceTMS"]))) < strtotime(date("Y-m-d"))) {
@@ -60,7 +60,7 @@ foreach ($results as $result)
             "end" => $futureOccurrence * 1000 + $result["DurationMinutes"] * 60 * 1000
         );
 
-        $futureOccurrence = $dateFunctions->calculateNextOccurrenceTMS($taskKey, $futureOccurrence);
+        $futureOccurrence = $dateFunctions->calculateNextOccurrenceTMS($result, $futureOccurrence);
     }
 }
 

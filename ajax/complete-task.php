@@ -82,8 +82,27 @@ else
 	$database->executeStatement($query, $parameters);
 }
 
-if ($nextOccurrenceTMS = $dateFunctions->calculateNextOccurrenceTMS($taskKey, strtotime($completedTMS))) {
+$query = "
+SELECT
+	*
+FROM
+	definedtasks
+WHERE
+	TaskKey = :taskkey
+";
 
+$parameters = array(
+	array('name' => ':taskkey', 'value' => $taskKey)
+);
+
+$results = $database->getResultSet($query, $parameters);
+
+if (!empty($results))
+{
+	$taskDefinition = $results[0];
+}
+
+if (isset($taskDefinition) && $nextOccurrenceTMS = $dateFunctions->calculateNextOccurrenceTMS($taskDefinition, strtotime($completedTMS))) {
 	$query = "
 	UPDATE definedtasks 
 	SET 
