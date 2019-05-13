@@ -5,6 +5,9 @@ header("Cache-Control: no-store, no-cache, must-revalidate");
 header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");
 
+require_once dirname(__FILE__).'/../classes/date-functions.php';
+$dateFunctions = new DateFunctions();
+
 require_once dirname(__FILE__).'/../classes/database.php';
 $database = new Database();
 
@@ -24,6 +27,10 @@ $results = $database->getResultSet($query);
 
 foreach ($results as $result)
 {
+    $taskKey = $result["TaskKey"];
+
+    $followingOccurrence = $dateFunctions->calculateNextOccurrenceTMS($taskKey, strtotime($result["NextOccurrenceTMS"]));
+
     $event_class = "event-info";
     if (strtotime(date("Y-m-d", strtotime($result["NextOccurrenceTMS"]))) < strtotime(date("Y-m-d"))) {
         $event_class = "event-important";
@@ -34,13 +41,27 @@ foreach ($results as $result)
     }
 
     $calendarEvents["result"][] = array(
-        "id" => $result["TaskKey"],
+        "id" => $taskKey,
         "title" => $result["TaskName"],
-        "url" => "complete-task.php?task_key=".$result["TaskKey"],
+        "url" => "complete-task.php?task_key=$taskKey",
         "class" => $event_class,
         "start" => strtotime($result["NextOccurrenceTMS"]) * 1000,
         "end" => strtotime($result["NextOccurrenceTMS"]) * 1000 + $result["DurationMinutes"] * 60 * 1000
     );
+
+    $futureOccurrence = $followingOccurrence;
+    while ($futureOccurrence < strtotime(date("Y-m-d")) + 90 * 24 * 3600) {
+        $calendarEvents["result"][] = array(
+            "id" => $taskKey,
+            "title" => $result["TaskName"],
+            "url" => "complete-task.php?task_key=$taskKey",
+            "class" => "event-info",
+            "start" => $futureOccurrence * 1000,
+            "end" => $futureOccurrence * 1000 + $result["DurationMinutes"] * 60 * 1000
+        );
+
+        $futureOccurrence = $dateFunctions->calculateNextOccurrenceTMS($taskKey, $futureOccurrence);
+    }
 }
 
 $query = "

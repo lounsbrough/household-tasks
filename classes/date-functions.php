@@ -7,7 +7,7 @@ Class DateFunctions
         $database = new Database();
 
         $query = "
-        SELECT 
+        SELECT
             *
         FROM
             definedtasks
