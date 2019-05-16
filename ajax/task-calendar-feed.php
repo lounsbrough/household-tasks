@@ -91,6 +91,10 @@ foreach ($results as $result)
     );
 }
 
+usort($calendarEvents["result"], function ($a, $b) {
+    return strcmp(strtolower($a["title"]), strtolower($b["title"]));
+});
+
 echo json_encode($calendarEvents);
 
 ?>
