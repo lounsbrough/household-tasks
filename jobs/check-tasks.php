@@ -19,7 +19,7 @@ function sendPushbulletNotifications($database, $pushbullet, $tasksDue) {
 	$activePushbulletDevices = $database->getResultSet($query);
 	$notifications = [];
 	foreach ($activePushbulletDevices as $pushbulletDevice) {
-		$notifications[$pushbulletDevice["DeviceName"]] = [];
+		$notifications[$pushbulletDevice["DeviceKey"]] = [];
 	}
 
 	foreach ($tasksDue as $taskDue)
@@ -47,17 +47,19 @@ function sendPushbulletNotifications($database, $pushbullet, $tasksDue) {
 
 		foreach ($taskPushbulletDevices as $pushbulletDevice)
 		{
-			array_push($notifications[$pushbulletDevice], $taskDue);
+			array_push($notifications[$pushbulletDevice["DeviceKey"]], $taskDue);
 		}
 	}
 
-	foreach ($notifications as $pushbulletDevice => $notification) {
+	foreach ($notifications as $pushbulletDeviceKey => $notification) {
+		$deviceIndex = array_search($pushbulletDeviceKey, array_column($activePushbulletDevices, 'DeviceKey'));
+
 		if (count($notification) == 1) {
-			$linkUrl = "https://".getenv('PUBLIC_SERVER_DNS')."/household-tasks/complete-task.php?task_key=".$notification[0]["TaskKey"]."&person_key=".$pushbulletDevice["PersonKey"];
-			$pushbullet->pushLink($pushbulletDevice["DeviceName"], $notification[0]["TaskName"], $linkUrl, 'View Task');
-		} else {
-			$linkUrl = "https://".getenv('PUBLIC_SERVER_DNS')."/household-tasks";
-			$pushbullet->pushLink($pushbulletDevice["DeviceName"], $notification[0]["TaskName"], $linkUrl, 'View All Tasks');
+			$linkUrl = "https://".getenv('PUBLIC_SERVER_DNS')."/household-tasks/complete-task.php?task_key=".$notification[0]["TaskKey"]."&person_key=".$activePushbulletDevices[$pushbulletDeviceKey]["PersonKey"];
+			$pushbullet->pushLink($activePushbulletDevices[$deviceIndex]["DeviceName"], $notification[0]["TaskName"], $linkUrl, 'View Task');
+		} else if (count($notification) > 1) {
+			$linkUrl = "https://".getenv('PUBLIC_SERVER_DNS')."/household-tasks";			
+			$pushbullet->pushLink($activePushbulletDevices[$deviceIndex]["DeviceName"], 'Multiple Tasks', $linkUrl, 'View All Tasks');
 		}
 	}
 }
