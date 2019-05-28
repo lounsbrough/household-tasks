@@ -41,6 +41,6 @@ $parameters = array(
 	array('name' => ':taskkey', 'value' => $_GET["task_key"])
 );
 
-$database->getResultSet($query, $parameters);
+$database->executeStatement($query, $parameters);
 
 ?>
