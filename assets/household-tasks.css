@@ -1,6 +1,6 @@
 @media (max-width: 767px) {
   .fc-scroller {
-    height: 70vh !important;
+    height: 75vh !important;
   }
 }
 .cursor-pointer {
@@ -30,4 +30,7 @@
 }
 .fc-left {
   font-size: 12px;
+}
+.fc-list-table {
+  border-bottom: 1px solid #007bff;
 }
