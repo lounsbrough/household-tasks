@@ -20,6 +20,13 @@ FROM
     definedtasks;
 ";
 
+class EventColors {
+    const Upcoming = "#007bff";
+    const Missed = "#dc3545";
+    const Snoozed = "#ffc107";
+    const Completed = "#28a745";
+}
+
 $results = $database->getResultSet($query);
 
 foreach ($results as $result)
@@ -28,20 +35,20 @@ foreach ($results as $result)
 
     $followingOccurrence = $dateFunctions->calculateNextOccurrenceTMS($result, strtotime($result["NextOccurrenceTMS"]));
 
-    $event_class = "event-info";
+    $backgroundColor = EventColors::Upcoming;
     if (strtotime(date("Y-m-d", strtotime($result["NextOccurrenceTMS"]))) < strtotime(date("Y-m-d"))) {
-        $event_class = "event-important";
+        $backgroundColor = EventColors::Missed;
     }
     else if ($result["Snoozed"])
     {
-        $event_class = "event-warning";
+        $backgroundColor = EventColors::Snoozed;
     }
 
     $calendarEvents[] = array(
         "id" => $taskKey,
         "title" => $result["TaskName"],
         "url" => "complete-task.php?task_key=$taskKey",
-        "class" => $event_class,
+        "backgroundColor" => $backgroundColor,
         "start" => strtotime($result["NextOccurrenceTMS"]) * 1000,
         "end" => strtotime($result["NextOccurrenceTMS"]) * 1000 + $result["DurationMinutes"] * 60 * 1000
     );
@@ -52,7 +59,7 @@ foreach ($results as $result)
             "id" => $taskKey,
             "title" => $result["TaskName"],
             "url" => "complete-task.php?task_key=$taskKey",
-            "class" => "event-info",
+            "backgroundColor" => EventColors::Upcoming,
             "start" => $futureOccurrence * 1000,
             "end" => $futureOccurrence * 1000 + $result["DurationMinutes"] * 60 * 1000
         );
@@ -76,13 +83,11 @@ $results = $database->getResultSet($query);
 
 foreach ($results as $result)
 {
-    $event_class = "event-success";
-    
     $calendarEvents[] = array(
         "id" => $result["TaskKey"],
         "title" => $result["TaskName"]." (".trim($result["FirstName"]).")",
         "url" => "complete-task.php?task_key=".$result["TaskKey"],
-        "class" => $event_class,
+        "backgroundColor" => EventColors::Completed,
         "start" => strtotime($result["CompletedTMS"]) * 1000,
         "end" => strtotime($result["CompletedTMS"]) * 1000 + $result["DurationMinutes"] * 60 * 1000
     );
