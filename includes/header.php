@@ -26,6 +26,8 @@ session_regenerate_id();
         <link rel="icon" type="image/png" href="favicon/favicon-192x192.png" sizes="192x192">
         <link rel="shortcut icon" href="favicon/favicon.ico">
 
+        <link rel="manifest" href="manifest.json" />
+
         <title><?= $pageTitle; ?></title>
 
         <!-- Font Awesome -->
