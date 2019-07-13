@@ -5,6 +5,10 @@ session_name("household_tasks");
 session_start();
 session_regenerate_id();
 
+if (!$_SESSION["logged_in"] && stristr($_SERVER['REQUEST_URI'], 'login.php') === false) {
+    header('Location: login.php');
+}
+
 ?>
 
 <!DOCTYPE html>
