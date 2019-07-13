@@ -77,7 +77,10 @@ session_regenerate_id();
     </nav>
 
         <div class="container">
-
             <div class="page-header main-page-header">
-                <h2><?= $pageTitle; ?></h2>
+                <h2><?= $pageTitle ?></h2>
+                <div>
+                    <?= $pageHeaderRightContent ?>
+                </div>
+                <div></div>
             </div>

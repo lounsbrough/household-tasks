@@ -15,4 +15,16 @@ $(() => {
 
 	calendar.render();
 
+	$("#set-list-view").click(() => {
+		const view = 'listWeek';
+		calendar.changeView(view);
+		$.get(`ajax/session-update-calendar-view.php?calendar_view=${view}`);
+	});
+
+	$("#set-month-view").click(() => {
+		const view = 'dayGridMonth';
+		calendar.changeView(view);
+		$.get(`ajax/session-update-calendar-view.php?calendar_view=${view}`);
+	});
+
 });

@@ -2,6 +2,11 @@
 
 $pageTitle = "Task Calendar";
 
+$pageHeaderRightContent = '
+    <button id="set-list-view" class="fc-button fc-button-primary">List</button>
+    <button id="set-month-view" class="fc-button fc-button-primary">Month</button>
+';
+
 define('DIR_PATH', '');
 
 $headerContent = '

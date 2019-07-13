@@ -55,73 +55,73 @@ for ($i = 1; $i <= 60; $i++) {
 
 ?>
 
-            <form id="task-details-form">
+<form id="task-details-form">
 
-                <br>
-                <div class="row">
+    <br>
+    <div class="row">
 
-                    <h3 class="col-md-12" style="font-size:20px">
-                        Task: 
-                        <select id="select-task" name="task_key">
-                            <?= $taskOptions ?>
-                        </select>
-                    </h3>
+        <h3 class="col-md-12" style="font-size:20px">
+            Task: 
+            <select id="select-task" name="task_key">
+                <?= $taskOptions ?>
+            </select>
+        </h3>
 
-                </div><br>
-                <div class="row">
+    </div><br>
+    <div class="row">
 
-                    <div class="col-md-12">
-                        Completed By: 
-                        <select id="select-person" name="person_key">
-                            <?= $personOptions ?>
-                        </select>
-                    </div>
+        <div class="col-md-12">
+            Completed By: 
+            <select id="select-person" name="person_key">
+                <?= $personOptions ?>
+            </select>
+        </div>
 
-                </div><br>            
-                <div class="row">
+    </div><br>            
+    <div class="row">
 
-                    <div class="col-md-12 task-action-div">
-                        <i id="fa-task-complete" class="fa-task-option fa fa-green fa-3x fa-check-circle-o cursor-pointer fa-vcenter fa-selected"></i>
-                        <span style="font-size:20px">
-                            <input type="datetime-local" name="completed_tms" value="<?php echo date("Y-m-d\TH:i"); ?>" style="max-width:70%" />
-                        </span>
-                    </div>
+        <div class="col-md-12 task-action-div">
+            <i id="fa-task-complete" class="fa-task-option fa fa-green fa-3x fa-check-circle-o cursor-pointer fa-vcenter fa-selected"></i>
+            <span style="font-size:20px">
+                <input type="datetime-local" name="completed_tms" value="<?php echo date("Y-m-d\TH:i"); ?>" style="max-width:70%" />
+            </span>
+        </div>
 
-                </div><br>
-                <div class="row">
+    </div><br>
+    <div class="row">
 
-                    <div class="col-md-12 task-action-div">
-                        <i id="fa-task-snooze-for" class="fa-task-option fa fa-yellow fa-3x fa-clock-o cursor-pointer fa-vcenter fa-unselected"></i>
-                        <span style="font-size:20px">
-                            <select disabled name="snooze_amount" style="opacity:0.3">
-                                <?= $snoozeAmountOptions ?>
-                            </select>
-                            <select disabled name="snooze_type" style="opacity:0.3">
-                                <option>minutes</option>
-                                <option>hours</option>
-                                <option selected>days</option>
-                            </select>
-                        </span>
-                    </div>
+        <div class="col-md-12 task-action-div">
+            <i id="fa-task-snooze-for" class="fa-task-option fa fa-yellow fa-3x fa-clock-o cursor-pointer fa-vcenter fa-unselected"></i>
+            <span style="font-size:20px">
+                <select disabled name="snooze_amount" style="opacity:0.3">
+                    <?= $snoozeAmountOptions ?>
+                </select>
+                <select disabled name="snooze_type" style="opacity:0.3">
+                    <option>minutes</option>
+                    <option>hours</option>
+                    <option selected>days</option>
+                </select>
+            </span>
+        </div>
 
-                </div><br>
-                <div class="row">
-                        
-                    <div class="col-md-12 task-action-div">
-                        <i id="fa-task-snooze-until" class="fa-task-option fa fa-yellow fa-3x fa-clock-o cursor-pointer fa-vcenter fa-unselected"></i>
-                        <span style="font-size:20px">
-                            <input disabled name="snooze_until" type="datetime-local" value="<?php echo date("Y-m-d\TH:i",strtotime("+1 days")); ?>" style="max-width:70%;opacity:0.3" />
-                        </span>
-                    </div>
-                </div><br><br>
-                <div class="row">
-                        
-                    <div class="col-md-12">
-                        <button id="task-action-button" type="button" class="btn btn-success btn-lg btn-block">Complete <i class="fa fa-check"></i></button>
-                    </div>
-                </div><br>
+    </div><br>
+    <div class="row">
+            
+        <div class="col-md-12 task-action-div">
+            <i id="fa-task-snooze-until" class="fa-task-option fa fa-yellow fa-3x fa-clock-o cursor-pointer fa-vcenter fa-unselected"></i>
+            <span style="font-size:20px">
+                <input disabled name="snooze_until" type="datetime-local" value="<?php echo date("Y-m-d\TH:i",strtotime("+1 days")); ?>" style="max-width:70%;opacity:0.3" />
+            </span>
+        </div>
+    </div><br><br>
+    <div class="row">
+            
+        <div class="col-md-12">
+            <button id="task-action-button" type="button" class="btn btn-success btn-lg btn-block">Complete <i class="fa fa-check"></i></button>
+        </div>
+    </div><br>
 
-            </form>
+</form>
 
 <?php
 

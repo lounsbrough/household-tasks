@@ -31,6 +31,13 @@
 .fc-left {
   font-size: 12px;
 }
-.fc-list-table {
-  border-bottom: 1px solid #007bff;
+.main-page-header h2 {
+  float: left;
+}
+.main-page-header div:first-of-type {
+  float: right;
+}
+.main-page-header div:last-of-type {
+  float: none;
+  clear: both;
 }
