@@ -17,18 +17,7 @@ require dirname(__FILE__).'/includes/header.php';
 
 ?>
 
-<div class="row" style="display: none">
-    <div class="col-sm-12">
-        <h3></h3>
-        <div class="date-header-btn pull-left form-inline">
-            <div class="btn-group">
-                <button class="btn active" data-calendar-view="month">List View</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div id="task-calendar-div" class="cal-context"></div>
+<div id="task-calendar-div"></div>
 
 <?php
 

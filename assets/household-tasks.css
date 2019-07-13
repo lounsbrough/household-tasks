@@ -1,14 +1,6 @@
-.main-page-header {
-  margin: 0px auto;
-}
-.page-header > h1,
-h2,
-h3 {
-  margin-top: 0px;
-}
 @media (max-width: 767px) {
-  .date-header-btn .btn {
-    font-size: 10px;
+  .fc-scroller {
+    height: 70vh !important;
   }
 }
 .cursor-pointer {
