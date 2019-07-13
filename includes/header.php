@@ -28,19 +28,31 @@ session_regenerate_id();
 
         <title><?= $pageTitle; ?></title>
 
-        <!-- Bootstrap core CSS -->
-        <link href="<?= DIR_PATH; ?>assets/bootstrap-3.3.6-dist/css/bootstrap.min.css" rel="stylesheet">
-
-        <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-        <link href="<?= DIR_PATH; ?>assets/bootstrap-3.3.6-dist/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
-
         <!-- Font Awesome -->
         <link href="<?= DIR_PATH; ?>assets/font-awesome/css/font-awesome.min.css" media="screen, projection" rel="stylesheet">
 
         <!-- Sweet Alert -->
         <link href="<?= DIR_PATH; ?>assets/sweetalert-master/dist/sweetalert.css" media="screen, projection" rel="stylesheet">
 
+        <!-- Bootstrap core CSS -->
+        <link href="<?= DIR_PATH; ?>assets/bootstrap-4.3.1-dist/css/bootstrap.min.css" rel="stylesheet">
+
         <link href="assets/household-tasks.css" media="screen, projection" rel="stylesheet">
+
+        <!-- JQuery -->
+        <script src="<?= DIR_PATH; ?>assets/jquery/jquery-3.4.1.min.js"></script>
+
+        <!-- underscorejs -->
+        <script src="<?= DIR_PATH; ?>assets/underscorejs/underscore-min.js"></script>
+
+        <!-- momentjs -->
+        <script src="<?= DIR_PATH; ?>assets/momentjs/moment.min.js"></script>
+
+        <!-- Bootstrap core JavaScript -->
+        <script src="<?= DIR_PATH; ?>assets/bootstrap-4.3.1-dist/js/bootstrap.min.js"></script>
+
+        <!-- Sweet Alert -->
+        <script src="<?= DIR_PATH; ?>assets/sweetalert-master/dist/sweetalert.min.js"></script>
 
         <?= $headerContent; ?>
 
@@ -48,26 +60,19 @@ session_regenerate_id();
 
     <body>
 
-        <nav class="navbar navbar-default">
+    <nav class="navbar-main-menu navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="task-calendar.php">Household Tasks</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-toggle-button" aria-controls="navbar-toggle-button" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-            <div class="container">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                </div>
-                <div id="navbar" class="collapse navbar-collapse">
-                    <ul class="nav navbar-nav">
-                        <li class="active"><a href="task-calendar.php">Task Calendar</a></li>
-                        <li class="active"><a href="complete-task.php">Complete Task</a></li>
-                    </ul>
-                </div>
-            </div>
-
-        </nav>
+        <div class="collapse navbar-collapse" id="navbar-toggle-button">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item"><a class="nav-link" href="task-calendar.php">Task Calendar</a></li>
+                <li class="nav-item"><a class="nav-link" href="complete-task.php">Complete Task</a></li>
+            </ul>
+        </div>
+    </nav>
 
         <div class="container">
 

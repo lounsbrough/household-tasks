@@ -11,10 +11,7 @@ $dateFunctions = new DateFunctions();
 require_once dirname(__FILE__).'/../classes/database.php';
 $database = new Database();
 
-$calendarEvents = array(
-    "success" => "1",
-    "result" => array()
-);
+$calendarEvents = array();
 
 $query = "
 SELECT 
@@ -40,7 +37,7 @@ foreach ($results as $result)
         $event_class = "event-warning";
     }
 
-    $calendarEvents["result"][] = array(
+    $calendarEvents[] = array(
         "id" => $taskKey,
         "title" => $result["TaskName"],
         "url" => "complete-task.php?task_key=$taskKey",
@@ -51,7 +48,7 @@ foreach ($results as $result)
 
     $futureOccurrence = $followingOccurrence;
     while ($futureOccurrence < strtotime(date("Y-m-d")) + 90 * 24 * 3600) {
-        $calendarEvents["result"][] = array(
+        $calendarEvents[] = array(
             "id" => $taskKey,
             "title" => $result["TaskName"],
             "url" => "complete-task.php?task_key=$taskKey",
@@ -81,7 +78,7 @@ foreach ($results as $result)
 {
     $event_class = "event-success";
     
-    $calendarEvents["result"][] = array(
+    $calendarEvents[] = array(
         "id" => $result["TaskKey"],
         "title" => $result["TaskName"]." (".trim($result["FirstName"]).")",
         "url" => "complete-task.php?task_key=".$result["TaskKey"],
@@ -91,7 +88,7 @@ foreach ($results as $result)
     );
 }
 
-usort($calendarEvents["result"], function ($a, $b) {
+usort($calendarEvents, function ($a, $b) {
     return strcmp(strtolower($a["title"]), strtolower($b["title"]));
 });
 
