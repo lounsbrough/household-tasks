@@ -54,12 +54,13 @@ function sendPushbulletNotifications($database, $pushbullet, $tasksDue) {
 	foreach ($notifications as $pushbulletDeviceKey => $notification) {
 		$deviceIndex = array_search($pushbulletDeviceKey, array_column($activePushbulletDevices, 'DeviceKey'));
 
-		if (count($notification) == 1) {
+		$taskCount = count($notification);
+		if ($taskCount == 1) {
 			$linkUrl = "https://".getenv('PUBLIC_SERVER_DNS')."/household-tasks/complete-task.php?task_key=".$notification[0]["TaskKey"]."&person_key=".$activePushbulletDevices[$pushbulletDeviceKey]["PersonKey"];
 			$pushbullet->pushLink($activePushbulletDevices[$deviceIndex]["DeviceName"], $notification[0]["TaskName"], $linkUrl, 'View Task');
-		} else if (count($notification) > 1) {
-			$linkUrl = "https://".getenv('PUBLIC_SERVER_DNS')."/household-tasks";			
-			$pushbullet->pushLink($activePushbulletDevices[$deviceIndex]["DeviceName"], 'Multiple Tasks', $linkUrl, 'View All Tasks');
+		} else if ($taskCount > 1) {
+			$linkUrl = "https://".getenv('PUBLIC_SERVER_DNS')."/household-tasks";
+			$pushbullet->pushLink($activePushbulletDevices[$deviceIndex]["DeviceName"], "$taskCount Tasks", $linkUrl, 'View All Tasks');
 		}
 	}
 }
